@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -58,7 +59,7 @@ public class NetworkServer : MonoBehaviour {
     public float timeStartedLearping;
     public float timeToLerp;
 
-
+    private char decimalseparator = char.Parse(Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator);
     // Start is called before the first frame update
     void Start()
     {
@@ -124,6 +125,7 @@ public class NetworkServer : MonoBehaviour {
                         break;
 
                     case "UPDCARTRANS":
+                        Debug.Log(msg);
                         Vector3 updatedPosition = new Vector3(ParseFloatUnit(msgArray[1]), ParseFloatUnit(msgArray[2]), ParseFloatUnit(msgArray[3]));
                         Quaternion updatedRotation = new Quaternion(ParseFloatUnit(msgArray[4]), ParseFloatUnit(msgArray[5]), ParseFloatUnit(msgArray[6]), ParseFloatUnit(msgArray[7]));
                         MoveClientPlayer(clientsList.Find(x => x.connectionId == connectionId), updatedPosition, updatedRotation);
@@ -133,9 +135,10 @@ public class NetworkServer : MonoBehaviour {
                         break;
 
                     case "UPDATEBOX":
-
+                        Debug.Log(msg);
                         Vector3 boxPosition = new Vector3(ParseFloatUnit(msgArray[1]), ParseFloatUnit(msgArray[2]), ParseFloatUnit(msgArray[3]));
                         Quaternion boxRotation = new Quaternion(ParseFloatUnit(msgArray[4]), ParseFloatUnit(msgArray[5]), ParseFloatUnit(msgArray[6]), ParseFloatUnit(msgArray[7]));
+                        Debug.Log(boxPosition);
                         MoveBox(listOfBoxes.Find(x => x.boxId == int.Parse(msgArray[8])), boxPosition, boxRotation);
 
                         msg = msg + "|" + connectionId;
@@ -202,8 +205,10 @@ public class NetworkServer : MonoBehaviour {
     private float ParseFloatUnit(string value)
     {
         float parsedFloat;
+        string parsedValue = value.Replace('.', decimalseparator);
+        parsedValue = parsedValue.Replace(',', decimalseparator);
 
-        if (float.TryParse(value, out parsedFloat))
+        if (float.TryParse(parsedValue, out parsedFloat))
         {
             return parsedFloat;
         }

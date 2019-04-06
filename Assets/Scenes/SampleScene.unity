@@ -363,7 +363,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hostIp: 0.0.0.0
   port: 3000
-  playerPrefab: {fileID: 4358791143447686842, guid: 22307c35d2c1bf6459e85dca104be6fd,
+  playerPrefab: {fileID: 1903400983757000, guid: 11134d1ebf2bb02409ec4c45871fc2d0,
     type: 3}
   boxToPlay: {fileID: 5365613134579949438, guid: 00ebd8af197c99d48bd3678834d53407,
     type: 3}
